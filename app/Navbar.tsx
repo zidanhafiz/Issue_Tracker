@@ -12,7 +12,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className='flex border-b-2 py-5 items-center gap-10 px-6 mb-6'>
+    <nav className='flex border-b-2 py-5 items-center gap-10 px-6'>
       <Link
         href='/'
         className='text-2xl'
