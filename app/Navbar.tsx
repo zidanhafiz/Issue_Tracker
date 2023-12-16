@@ -1,7 +1,11 @@
+'use client';
+import classNames from 'classnames';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { RiBugFill } from 'react-icons/ri';
 
 const Navbar = () => {
+  const currentPath = usePathname();
   const navList = [
     { name: 'Dashboard', link: '/' },
     { name: 'Issues', link: '/issues' },
@@ -20,7 +24,10 @@ const Navbar = () => {
           <li key={list.name}>
             <Link
               href={list.link}
-              className='text-slate-500 hover:text-black transition-colors'
+              className={classNames('hover:text-black', 'transition-colors', {
+                'text-black font-semibold': currentPath === list.link,
+                'text-slate-500': currentPath !== list.link,
+              })}
             >
               {list.name}
             </Link>
