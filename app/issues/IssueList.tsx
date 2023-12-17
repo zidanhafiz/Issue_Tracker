@@ -1,7 +1,11 @@
-import { Badge, Box, Button, Flex, Text } from '@radix-ui/themes';
+import { formatDate, getStatusObject } from '@/utils/utils';
+import { Badge, Box, Button, Flex, Text, badgePropDefs } from '@radix-ui/themes';
 import React from 'react';
 
 const IssueList = ({ issue }: { issue: Issue }) => {
+  const openedAt = formatDate(issue.createdAt);
+  const status = getStatusObject(issue.status);
+
   return (
     <Box className='border border-gray-300 py-4 px-4 rounded-lg w-full max-w-xl'>
       <Flex
@@ -36,15 +40,15 @@ const IssueList = ({ issue }: { issue: Issue }) => {
         color='gray'
         mb='2'
       >
-        Opened at: {issue.createdAt}
+        <em>Opened at: {openedAt}</em>
       </Text>
       <Flex justify='between'>
         <Badge
-          color='ruby'
+          color={status.color}
           variant='soft'
           radius='full'
         >
-          {issue.status}
+          {status.name}
         </Badge>
         <Button
           size='1'
