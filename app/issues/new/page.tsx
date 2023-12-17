@@ -4,11 +4,12 @@ import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
 import { useForm, Controller } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { createIssueSchema } from '@/app/validation-schema';
+import { z } from 'zod';
 
-type IssueForm = {
-  title: string;
-  description: string;
-};
+type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
   const {
@@ -16,8 +17,9 @@ const NewIssuePage = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<IssueForm>();
+  } = useForm<IssueForm>({ resolver: zodResolver(createIssueSchema) });
   const router = useRouter();
+  const [error, setError] = useState<boolean>(false);
 
   const sendData = async (data: IssueForm) => {
     try {
@@ -35,6 +37,7 @@ const NewIssuePage = () => {
 
       return router.push('/issues');
     } catch (error) {
+      setError(true);
       console.error(error);
     }
   };
@@ -44,24 +47,22 @@ const NewIssuePage = () => {
       className='max-w-xl space-y-4'
       onSubmit={handleSubmit((data) => sendData(data))}
     >
-      {errors.title?.type === 'required' && <ErrorCallout message='Title is required!' />}
+      {error && <ErrorCallout message='An unexpected error occur.' />}
+      {errors.title?.message && <ErrorCallout message={errors.title?.message} />}
       <TextFieldInput
         placeholder='Title'
-        {...register('title', { required: true })}
-        aria-invalid={errors.title ? 'true' : 'false'}
+        {...register('title')}
       />
-      {errors.description?.type === 'required' && (
-        <ErrorCallout message='Description is required!' />
+      {errors.description?.message && (
+        <ErrorCallout message={errors.description?.message} />
       )}
       <Controller
         name='description'
         control={control}
-        rules={{ required: true }}
         render={({ field }) => (
           <SimpleMDE
             placeholder='Description'
             {...field}
-            aria-invalid={errors.description ? 'true' : 'false'}
           />
         )}
       />
