@@ -26,7 +26,7 @@ const Navbar = () => {
               href={list.link}
               className={classNames('hover:text-black', 'transition-colors', {
                 'text-black font-[500]': currentPath === list.link,
-                'text-slate-500': currentPath !== list.link,
+                'text-slate-500 font-normal': currentPath !== list.link,
               })}
             >
               {list.name}

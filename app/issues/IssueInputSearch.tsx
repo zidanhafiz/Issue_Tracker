@@ -1,6 +1,6 @@
 'use client';
 import CategorySelect from '@/components/CategorySelect';
-import { Flex, Select, TextField } from '@radix-ui/themes';
+import { Box, Flex, Select, Text, TextField } from '@radix-ui/themes';
 
 const categories = [
   {
@@ -23,17 +23,28 @@ const categories = [
 
 const IssueInputSearch = () => {
   return (
-    <Flex
-      justify='center'
-      width='100%'
-      gap='2'
-    >
-      <TextField.Input
-        placeholder='Search Issue'
+    <Box className='max-w-screen-xl mx-auto'>
+      <Flex
+        justify='center'
         width='100%'
-      />
-      <CategorySelect categories={categories} />
-    </Flex>
+        gap='2'
+        mb='6'
+      >
+        <TextField.Input
+          placeholder='Search Issue'
+          width='100%'
+        />
+        <CategorySelect categories={categories} />
+      </Flex>
+      <Text
+        as='div'
+        className='underline'
+        weight='medium'
+        size='2'
+      >
+        Recent
+      </Text>
+    </Box>
   );
 };
 

@@ -38,7 +38,7 @@ const IssuesPage = async () => {
       <Separator />
       <div className='mt-6'>
         <IssueInputSearch />
-        <div className='max-w-screen-xl mx-auto flex flex-col md:flex-row md:flex-wrap gap-4 mt-6'>
+        <div className='max-w-screen-xl mx-auto flex flex-col md:flex-row md:flex-wrap gap-4 mt-4'>
           {issues &&
             issues.map((issue) => (
               <IssueList
