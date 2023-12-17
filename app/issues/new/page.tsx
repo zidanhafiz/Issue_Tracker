@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { createIssueSchema } from '@/app/validation-schema';
 import { z } from 'zod';
 import ErrorCallout from '@/components/ErrorCallout';
+import Spinner from '@/components/Spinner';
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -21,8 +22,10 @@ const NewIssuePage = () => {
   } = useForm<IssueForm>({ resolver: zodResolver(createIssueSchema) });
   const router = useRouter();
   const [error, setError] = useState<boolean>(false);
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
   const sendData = async (data: IssueForm) => {
+    setIsSubmit(true);
     try {
       const res = await fetch('/api/issues', {
         method: 'POST',
@@ -35,9 +38,10 @@ const NewIssuePage = () => {
       if (!res.ok) {
         throw new Error('Failed to submit data');
       }
-
+      setIsSubmit(false);
       return router.push('/issues');
     } catch (error) {
+      setIsSubmit(false);
       setError(true);
       console.error(error);
     }
@@ -52,12 +56,14 @@ const NewIssuePage = () => {
       <ErrorCallout message={errors.title?.message} />
       <TextFieldInput
         placeholder='Title'
+        disabled={isSubmit}
         {...register('title')}
       />
       <ErrorCallout message={errors.description?.message} />
       <Controller
         name='description'
         control={control}
+        disabled={isSubmit}
         render={({ field }) => (
           <SimpleMDE
             placeholder='Description'
@@ -65,7 +71,7 @@ const NewIssuePage = () => {
           />
         )}
       />
-      <Button>Create Issue</Button>
+      <Button disabled={isSubmit}>{isSubmit && <Spinner />}Create Issue</Button>
     </form>
   );
 };
