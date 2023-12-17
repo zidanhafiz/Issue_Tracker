@@ -1,7 +1,7 @@
 import { Button, Flex, Heading, Separator } from '@radix-ui/themes';
 import Link from 'next/link';
 import IssueInputSearch from './IssueInputSearch';
-import IssuesList from './IssuesList';
+import IssueList from './IssueList';
 
 const getIssues = async () => {
   try {
@@ -38,13 +38,15 @@ const IssuesPage = async () => {
       <Separator />
       <div className='mt-6'>
         <IssueInputSearch />
-        {issues &&
-          issues.map((issue) => (
-            <IssuesList
-              key={issue.id}
-              issue={issue}
-            />
-          ))}
+        <div className='max-w-screen-xl mx-auto flex flex-col md:flex-row md:flex-wrap gap-4 mt-6'>
+          {issues &&
+            issues.map((issue) => (
+              <IssueList
+                key={issue.id}
+                issue={issue}
+              />
+            ))}
+        </div>
       </div>
     </>
   );
