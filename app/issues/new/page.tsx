@@ -1,5 +1,5 @@
 'use client';
-import { Button, Callout, TextFieldInput } from '@radix-ui/themes';
+import { Button, TextFieldInput } from '@radix-ui/themes';
 import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
 import { useForm, Controller } from 'react-hook-form';
@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { createIssueSchema } from '@/app/validation-schema';
 import { z } from 'zod';
+import ErrorCallout from '@/components/ErrorCallout';
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -48,14 +49,12 @@ const NewIssuePage = () => {
       onSubmit={handleSubmit((data) => sendData(data))}
     >
       {error && <ErrorCallout message='An unexpected error occur.' />}
-      {errors.title?.message && <ErrorCallout message={errors.title?.message} />}
+      <ErrorCallout message={errors.title?.message} />
       <TextFieldInput
         placeholder='Title'
         {...register('title')}
       />
-      {errors.description?.message && (
-        <ErrorCallout message={errors.description?.message} />
-      )}
+      <ErrorCallout message={errors.description?.message} />
       <Controller
         name='description'
         control={control}
@@ -68,17 +67,6 @@ const NewIssuePage = () => {
       />
       <Button>Create Issue</Button>
     </form>
-  );
-};
-
-const ErrorCallout = ({ message }: { message: string }) => {
-  return (
-    <Callout.Root
-      size='1'
-      color='red'
-    >
-      <Callout.Text>{message}</Callout.Text>
-    </Callout.Root>
   );
 };
 
