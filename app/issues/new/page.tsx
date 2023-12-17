@@ -1,15 +1,62 @@
 'use client';
-import { Button, TextArea, TextFieldInput } from '@radix-ui/themes';
+import { Button, TextFieldInput } from '@radix-ui/themes';
 import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
+import { useForm, Controller } from 'react-hook-form';
+import { error } from 'console';
+import { useRouter } from 'next/navigation';
+
+type IssueForm = {
+  title: string;
+  description: string;
+};
 
 const NewIssuePage = () => {
+  const { register, control, handleSubmit } = useForm<IssueForm>();
+  const router = useRouter();
+
+  const sendData = async (data: IssueForm) => {
+    try {
+      const res = await fetch('/api/issues', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'aplication/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to submit data');
+      }
+
+      return router.push('/issues');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <div className='max-w-xl space-y-4'>
-      <TextFieldInput placeholder='Title' />
-      <SimpleMDE placeholder='Description' />
+    <form
+      className='max-w-xl space-y-4'
+      onSubmit={handleSubmit((data) => sendData(data))}
+    >
+      <TextFieldInput
+        placeholder='Title'
+        {...register('title', { required: true })}
+      />
+      <Controller
+        name='description'
+        control={control}
+        rules={{ required: true }}
+        render={({ field }) => (
+          <SimpleMDE
+            placeholder='Description'
+            {...field}
+          />
+        )}
+      />
       <Button>Create Issue</Button>
-    </div>
+    </form>
   );
 };
 
