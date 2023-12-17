@@ -1,13 +1,13 @@
 import { formatDate, getStatusObject } from '@/utils/utils';
-import { Badge, Box, Button, Flex, Text, badgePropDefs } from '@radix-ui/themes';
-import React from 'react';
+import { Badge, Box, Button, Flex, Text } from '@radix-ui/themes';
+import Link from 'next/link';
 
 const IssueList = ({ issue }: { issue: Issue }) => {
   const openedAt = formatDate(issue.createdAt);
   const status = getStatusObject(issue.status);
 
   return (
-    <Box className='border border-gray-300 py-4 px-4 rounded-lg w-full max-w-xl'>
+    <Box className='border border-gray-300 py-4 px-4 rounded-lg'>
       <Flex
         gap='4'
         align='center'
@@ -50,13 +50,15 @@ const IssueList = ({ issue }: { issue: Issue }) => {
         >
           {status.name}
         </Badge>
-        <Button
-          size='1'
-          variant='outline'
-          color='purple'
-        >
-          Details
-        </Button>
+        <Link href={`/issues/${issue.id}`}>
+          <Button
+            size='1'
+            variant='outline'
+            color='purple'
+          >
+            Details
+          </Button>
+        </Link>
       </Flex>
     </Box>
   );

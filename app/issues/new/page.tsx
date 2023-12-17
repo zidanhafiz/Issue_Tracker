@@ -52,7 +52,7 @@ const NewIssuePage = () => {
     <>
       <BackButton />
       <form
-        className='max-w-xl space-y-4 mt-4'
+        className='space-y-4 mt-4'
         onSubmit={handleSubmit((data) => sendData(data))}
       >
         {error && <ErrorCallout message='An unexpected error occur.' />}

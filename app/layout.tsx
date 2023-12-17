@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           scaling='105%'
         >
           <Navbar />
-          <main className='px-6 py-8'>{children}</main>
+          <main className='px-6 py-8 max-w-screen-xl mx-auto'>{children}</main>
         </Theme>
       </body>
     </html>
