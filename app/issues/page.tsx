@@ -1,8 +1,27 @@
-import { Button, Flex, Heading } from '@radix-ui/themes';
+import { Button, Flex, Heading, Separator } from '@radix-ui/themes';
 import Link from 'next/link';
 import IssueInputSearch from './IssueInputSearch';
+import IssuesList from './IssuesList';
 
-const Issues = () => {
+const getIssues = async () => {
+  try {
+    const res = await fetch('http://localhost:3000/api/issues');
+
+    if (!res.ok) {
+      throw new Error('Error get data');
+    }
+
+    const issues = await res.json();
+    return issues;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const IssuesPage = async () => {
+  const issues: Issue[] = await getIssues();
+
   return (
     <>
       <Flex
@@ -16,12 +35,19 @@ const Issues = () => {
         </Link>
       </Flex>
       <hr />
-      <div className='mt-8'>
+      <Separator />
+      <div className='mt-6'>
         <IssueInputSearch />
-        <p>Issue</p>
+        {issues &&
+          issues.map((issue) => (
+            <IssuesList
+              key={issue.id}
+              issue={issue}
+            />
+          ))}
       </div>
     </>
   );
 };
 
-export default Issues;
+export default IssuesPage;
