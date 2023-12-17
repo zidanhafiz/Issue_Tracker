@@ -9,7 +9,7 @@ const CategorySelect = ({ categories }: { categories: Categories[] }) => {
   return (
     <Select.Root defaultValue={categories[0].value}>
       <Select.Trigger />
-      <Select.Content>
+      <Select.Content position='popper'>
         <Select.Group>
           {categories.map((c) => (
             <Select.Item
