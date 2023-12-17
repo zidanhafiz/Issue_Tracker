@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma/client';
 import { createIssueSchema } from '@/app/validation-schema';
+import { revalidateTag } from 'next/cache';
 
 export async function GET() {
   try {
@@ -24,5 +25,6 @@ export async function POST(req: NextRequest) {
     data: { title: body.title, description: body.description },
   });
 
+  revalidateTag('issues');
   return NextResponse.json(newIssue, { status: 201 });
 }

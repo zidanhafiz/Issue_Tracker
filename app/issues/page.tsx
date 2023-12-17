@@ -5,7 +5,9 @@ import IssueList from './IssueList';
 
 const getIssues = async () => {
   try {
-    const res = await fetch('http://localhost:3000/api/issues');
+    const res = await fetch('http://localhost:3000/api/issues', {
+      next: { tags: ['issues'] },
+    });
 
     if (!res.ok) {
       throw new Error('Error get data');
