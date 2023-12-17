@@ -10,6 +10,7 @@ import { createIssueSchema } from '@/app/validation-schema';
 import { z } from 'zod';
 import ErrorCallout from '@/components/ErrorCallout';
 import Spinner from '@/components/Spinner';
+import BackButton from '@/components/BackButton';
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -48,31 +49,34 @@ const NewIssuePage = () => {
   };
 
   return (
-    <form
-      className='max-w-xl space-y-4'
-      onSubmit={handleSubmit((data) => sendData(data))}
-    >
-      {error && <ErrorCallout message='An unexpected error occur.' />}
-      <ErrorCallout message={errors.title?.message} />
-      <TextFieldInput
-        placeholder='Title'
-        disabled={isSubmit}
-        {...register('title')}
-      />
-      <ErrorCallout message={errors.description?.message} />
-      <Controller
-        name='description'
-        control={control}
-        disabled={isSubmit}
-        render={({ field }) => (
-          <SimpleMDE
-            placeholder='Description'
-            {...field}
-          />
-        )}
-      />
-      <Button disabled={isSubmit}>{isSubmit && <Spinner />}Create Issue</Button>
-    </form>
+    <>
+      <BackButton />
+      <form
+        className='max-w-xl space-y-4 mt-4'
+        onSubmit={handleSubmit((data) => sendData(data))}
+      >
+        {error && <ErrorCallout message='An unexpected error occur.' />}
+        <ErrorCallout message={errors.title?.message} />
+        <TextFieldInput
+          placeholder='Title'
+          disabled={isSubmit}
+          {...register('title')}
+        />
+        <ErrorCallout message={errors.description?.message} />
+        <Controller
+          name='description'
+          control={control}
+          disabled={isSubmit}
+          render={({ field }) => (
+            <SimpleMDE
+              placeholder='Description'
+              {...field}
+            />
+          )}
+        />
+        <Button disabled={isSubmit}>{isSubmit && <Spinner />}Create Issue</Button>
+      </form>
+    </>
   );
 };
 
