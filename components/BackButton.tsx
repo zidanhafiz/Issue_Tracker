@@ -14,7 +14,7 @@ const BackButton = () => {
     return (
       <Link
         onClick={onClick}
-        className='flex items-center gap-2'
+        className='flex justify-start w-fit items-center gap-2'
       >
         <FaArrowLeft />
         Back
@@ -25,7 +25,7 @@ const BackButton = () => {
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger>
-        <Link className='flex items-center gap-2'>
+        <Link className='flex justify-start w-fit items-center gap-2'>
           <FaArrowLeft />
           Back
         </Link>
