@@ -11,8 +11,9 @@ import { z } from 'zod';
 import ErrorCallout from '@/components/ErrorCallout';
 import Spinner from '@/components/Spinner';
 import BackButton from '@/components/BackButton';
+import { createIssue } from '@/utils/httpRequest';
 
-type IssueForm = z.infer<typeof createIssueSchema>;
+export type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
   const {
@@ -26,27 +27,9 @@ const NewIssuePage = () => {
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
   const sendData = handleSubmit(async (data: IssueForm) => {
-    setIsSubmit(true);
-    try {
-      const res = await fetch('/api/issues', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'aplication/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) {
-        throw new Error('Failed to submit data');
-      }
-
-      setIsSubmit(false);
+    await createIssue({ data, setIsSubmit, setError }, () => {
       router.push('/issues');
-    } catch (error) {
-      setIsSubmit(false);
-      setError(true);
-      console.error(error);
-    }
+    });
   });
 
   return (

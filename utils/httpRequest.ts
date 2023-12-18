@@ -1,9 +1,19 @@
-import { redirect } from 'next/navigation';
+import { IssueForm } from '@/app/issues/new/page';
 import { Dispatch, SetStateAction } from 'react';
+import { notificationAlert } from './utils';
+
+type CreateIssue = {
+  data: IssueForm;
+  setIsSubmit: Dispatch<SetStateAction<boolean>>;
+  setError: Dispatch<SetStateAction<boolean>>;
+};
+
+export const baseUrl = process.env.BASE_URL;
+export const publicUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const getIssues = async () => {
   try {
-    const res = await fetch('http://localhost:3000/api/issues', {
+    const res = await fetch(`${baseUrl}/api/issues`, {
       next: { tags: ['issues'] },
     });
 
@@ -21,7 +31,7 @@ export const getIssues = async () => {
 
 export const getIssueDetail = async (id: number) => {
   try {
-    const res = await fetch(`http://localhost:3000/api/issues/${id}`);
+    const res = await fetch(`${baseUrl}/api/issues/${id}`);
 
     if (!res.ok) {
       throw new Error('Error get data');
@@ -35,24 +45,46 @@ export const getIssueDetail = async (id: number) => {
   }
 };
 
-type DeleteIssue = {
-  id: number;
-  setIsError: Dispatch<SetStateAction<boolean>>;
-  setIsSuccess: Dispatch<SetStateAction<boolean>>;
+export const createIssue = async (
+  { data, setIsSubmit, setError }: CreateIssue,
+  callback: () => void
+) => {
+  setIsSubmit(true);
+  try {
+    const res = await fetch(`${publicUrl}/api/issues`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'aplication/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      throw new Error('Failed to submit data');
+    }
+    setIsSubmit(false);
+    notificationAlert('success', 'Success create issue!');
+    callback();
+  } catch (error) {
+    setIsSubmit(false);
+    setError(true);
+    notificationAlert('error', 'Error create issue!');
+    console.error(error);
+  }
 };
 
-export const deleteIssue = async ({ id, setIsError, setIsSuccess }: DeleteIssue) => {
+export const deleteIssue = async (id: number) => {
   try {
-    const res = await fetch(`http://localhost:3000/api/issues/${id}`, {
+    const res = await fetch(`${publicUrl}/api/issues/${id}`, {
       method: 'DELETE',
     });
 
     if (!res.ok) {
       throw new Error(res.statusText);
     }
-    setIsSuccess(true);
+    notificationAlert('success', 'Success delete issue!');
   } catch (error) {
     console.error(error);
-    setIsError(true);
+    notificationAlert('error', 'Error delete issue!');
   }
 };
