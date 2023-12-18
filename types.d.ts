@@ -29,3 +29,13 @@ type IssueStatus = {
   };
   [key: string]: Status | undefined;
 };
+
+type Message = {
+  title: string;
+  description: string;
+  cancel?: string;
+  yes?: {
+    color?: 'green' | 'red';
+    name?: string;
+  };
+};

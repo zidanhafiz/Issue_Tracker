@@ -2,22 +2,7 @@ import { Badge, Box, Flex, Heading, Separator, Text } from '@radix-ui/themes';
 import ButtonGroup from './ButtonGroup';
 import BackButton from '@/components/BackButton';
 import { formatDate, getStatusObject } from '@/utils/utils';
-
-const getIssueDetail = async (id: number) => {
-  try {
-    const res = await fetch(`http://localhost:3000/api/issues/${id}`);
-
-    if (!res.ok) {
-      throw new Error('Error get data');
-    }
-
-    const issue = await res.json();
-    return issue;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
+import { getIssueDetail } from '@/utils/httpRequest';
 
 const IssueDetails = async ({ params }: { params: { id: string } }) => {
   const id = parseInt(params.id);
@@ -83,7 +68,7 @@ const IssueDetails = async ({ params }: { params: { id: string } }) => {
         </Badge>
       </Flex>
       <Separator size='4' />
-      <ButtonGroup id='3' />
+      <ButtonGroup id={id} />
     </Box>
   );
 };

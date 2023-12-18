@@ -24,3 +24,13 @@ export const getStatusObject = (key: string) => {
   };
   return issueStatus[key] || { name: 'Open', color: 'blue' };
 };
+
+export class Modal {
+  message: Message;
+  handle: (id: number) => Promise<void>;
+
+  constructor(prop: Message, handle: (id: number) => Promise<void>) {
+    this.message = prop;
+    this.handle = handle;
+  }
+}

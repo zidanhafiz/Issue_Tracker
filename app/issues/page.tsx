@@ -2,24 +2,7 @@ import { Button, Flex, Heading, Separator } from '@radix-ui/themes';
 import Link from 'next/link';
 import IssueInputSearch from './IssueInputSearch';
 import IssueList from './IssueList';
-
-const getIssues = async () => {
-  try {
-    const res = await fetch('http://localhost:3000/api/issues', {
-      next: { tags: ['issues'] },
-    });
-
-    if (!res.ok) {
-      throw new Error('Error get data');
-    }
-
-    const issues = await res.json();
-    return issues;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
+import { getIssues } from '@/utils/httpRequest';
 
 const IssuesPage = async () => {
   const issues: Issue[] = await getIssues();
