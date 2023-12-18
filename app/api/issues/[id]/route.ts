@@ -27,17 +27,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 }
 
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
-  const s = req.nextUrl.searchParams.get('id');
   const id = parseInt(params.id);
   const body = await req.json();
   const validation = updateIssueSchema.safeParse(body);
-
-  const data = {
-    ...body,
-    title: body.title,
-    description: body.description,
-    status: body.status,
-  };
 
   if (!validation.success) {
     return NextResponse.json(validation.error.format(), { status: 400 });
@@ -47,7 +39,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     where: {
       id: id,
     },
-    data: data,
+    data: body,
   });
 
   revalidateTag('issues');
