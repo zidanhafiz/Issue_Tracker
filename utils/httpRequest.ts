@@ -31,7 +31,9 @@ export const getIssues = async () => {
 
 export const getIssueDetail = async (id: number) => {
   try {
-    const res = await fetch(`${baseUrl}/api/issues/${id}`);
+    const res = await fetch(`${baseUrl}/api/issues/${id}`, {
+      next: { tags: ['issues'] },
+    });
 
     if (!res.ok) {
       throw new Error('Error get data');
@@ -86,5 +88,26 @@ export const deleteIssue = async (id: number) => {
   } catch (error) {
     console.error(error);
     notificationAlert('error', 'Error delete issue!');
+  }
+};
+
+export const updateIssue = async (id: number, issue: Issue, callback: () => void) => {
+  try {
+    const res = await fetch(`${publicUrl}/api/issues/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'aplication/json',
+      },
+      body: JSON.stringify(issue),
+    });
+
+    if (!res.ok) {
+      throw new Error('Failed to update data');
+    }
+    notificationAlert('success', 'Success update issue!');
+    callback();
+  } catch (error) {
+    notificationAlert('error', 'Error update issue!');
+    console.error(error);
   }
 };
