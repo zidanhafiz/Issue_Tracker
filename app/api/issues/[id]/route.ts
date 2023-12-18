@@ -32,16 +32,12 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   const body = await req.json();
   const validation = updateIssueSchema.safeParse(body);
 
-  console.log('ini:', s);
-
   const data = {
     ...body,
     title: body.title,
     description: body.description,
     status: body.status,
   };
-
-  console.log(data);
 
   if (!validation.success) {
     return NextResponse.json(validation.error.format(), { status: 400 });
