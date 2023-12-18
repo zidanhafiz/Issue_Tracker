@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 export const formatDate = (dateString: string) => {
   const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
   const formattedDate = new Date(dateString).toLocaleDateString(
@@ -34,3 +36,17 @@ export class Modal {
     this.handle = handle;
   }
 }
+
+export const notificationAlert = (type: 'success' | 'error', message: string) => {
+  toast(message, {
+    position: 'top-center',
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: 'colored',
+    type: type,
+  });
+};
