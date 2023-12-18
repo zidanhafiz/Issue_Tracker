@@ -25,7 +25,7 @@ const NewIssuePage = () => {
   const [error, setError] = useState<boolean>(false);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
-  const sendData = async (data: IssueForm) => {
+  const sendData = handleSubmit(async (data: IssueForm) => {
     setIsSubmit(true);
     try {
       const res = await fetch('/api/issues', {
@@ -39,21 +39,22 @@ const NewIssuePage = () => {
       if (!res.ok) {
         throw new Error('Failed to submit data');
       }
+
       setIsSubmit(false);
-      return router.push('/issues');
+      router.push('/issues');
     } catch (error) {
       setIsSubmit(false);
       setError(true);
       console.error(error);
     }
-  };
+  });
 
   return (
     <>
       <BackButton />
       <form
         className='space-y-4 mt-4'
-        onSubmit={handleSubmit((data) => sendData(data))}
+        onSubmit={sendData}
       >
         {error && <ErrorCallout message='An unexpected error occur.' />}
         <ErrorCallout message={errors.title?.message} />
