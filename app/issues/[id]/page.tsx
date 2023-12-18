@@ -62,7 +62,7 @@ const IssueDetails = async ({ params }: { params: { id: string } }) => {
         </Badge>
         <Badge
           variant='soft'
-          color={status.name === 'Close' ? 'green' : 'orange'}
+          color={status.name === 'Closed' ? 'green' : 'orange'}
         >
           {status.name === 'Closed' ? `Closed at: ${closedAt}` : 'Not Finished'}
         </Badge>
