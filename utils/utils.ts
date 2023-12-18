@@ -1,5 +1,38 @@
 import { toast } from 'react-toastify';
 
+export const createStatus = (status: string) => {
+  switch (status) {
+    case 'OPEN':
+      return 'IN_PROGRESS';
+    case 'IN_PROGRESS':
+      return 'CLOSED';
+    default:
+      return 'OPEN';
+  }
+};
+
+export const getNextStatus = (status: string) => {
+  switch (status) {
+    case 'OPEN':
+      return 'Solve Issue';
+    case 'IN_PROGRESS':
+      return 'Close Issue';
+    default:
+      return 'Open Issue';
+  }
+};
+
+export const createStatusObject = (status: string): Status => {
+  switch (status) {
+    case 'OPEN':
+      return { name: 'Open', color: 'blue' };
+    case 'IN_PROGRESS':
+      return { name: 'In Progress', color: 'orange' };
+    default:
+      return { name: 'Closed', color: 'green' };
+  }
+};
+
 export const formatDate = (dateString: string) => {
   const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
   const formattedDate = new Date(dateString).toLocaleDateString(
@@ -7,24 +40,6 @@ export const formatDate = (dateString: string) => {
     options as Intl.DateTimeFormatOptions
   );
   return formattedDate;
-};
-
-export const getStatusObject = (key: string) => {
-  const issueStatus: IssueStatus = {
-    OPEN: {
-      name: 'Open',
-      color: 'blue',
-    },
-    IN_PROGRESS: {
-      name: 'In Progress',
-      color: 'orange',
-    },
-    CLOSED: {
-      name: 'Closed',
-      color: 'green',
-    },
-  };
-  return issueStatus[key] || { name: 'Open', color: 'blue' };
 };
 
 export class Modal {

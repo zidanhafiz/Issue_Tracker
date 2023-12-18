@@ -1,10 +1,10 @@
-import { formatDate, getStatusObject } from '@/utils/utils';
+import { formatDate, createStatusObject } from '@/utils/utils';
 import { Badge, Box, Button, Flex, Text } from '@radix-ui/themes';
 import Link from 'next/link';
 
 const IssueList = ({ issue }: { issue: Issue }) => {
   const openedAt = formatDate(issue.createdAt);
-  const status = getStatusObject(issue.status);
+  const status = createStatusObject(issue.status);
 
   return (
     <Box className='border border-gray-300 py-4 px-4 rounded-lg'>

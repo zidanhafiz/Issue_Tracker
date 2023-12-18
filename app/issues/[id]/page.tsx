@@ -1,7 +1,7 @@
 import { Badge, Box, Flex, Heading, Separator, Text } from '@radix-ui/themes';
 import ButtonGroup from './ButtonGroup';
 import BackButton from '@/components/BackButton';
-import { formatDate, getStatusObject } from '@/utils/utils';
+import { formatDate, createStatusObject } from '@/utils/utils';
 import { getIssueDetail } from '@/utils/httpRequest';
 
 const IssueDetails = async ({ params }: { params: { id: string } }) => {
@@ -9,7 +9,7 @@ const IssueDetails = async ({ params }: { params: { id: string } }) => {
   const issue: Issue = await getIssueDetail(id);
   const openedAt = formatDate(issue.createdAt);
   const closedAt = formatDate(issue.updatedAt);
-  const status = getStatusObject(issue.status);
+  const status = createStatusObject(issue.status);
 
   return (
     <Box className='max-w-screen-lg mx-auto'>
@@ -62,13 +62,13 @@ const IssueDetails = async ({ params }: { params: { id: string } }) => {
         </Badge>
         <Badge
           variant='soft'
-          color={status.name === 'Open' ? 'orange' : 'green'}
+          color={status.name === 'Close' ? 'green' : 'orange'}
         >
-          {status.name === 'Open' ? 'Not Finished' : `Closed at: ${closedAt}`}
+          {status.name === 'Closed' ? `Closed at: ${closedAt}` : 'Not Finished'}
         </Badge>
       </Flex>
       <Separator size='4' />
-      <ButtonGroup id={id} />
+      <ButtonGroup issue={issue} />
     </Box>
   );
 };
