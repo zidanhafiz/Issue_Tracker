@@ -5,7 +5,8 @@ import { Theme } from '@radix-ui/themes';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Navbar from './Navbar';
-import { StatusContextProvider } from '@/context/StatusContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -29,10 +30,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           radius='large'
           scaling='105%'
         >
-          <StatusContextProvider>
-            <Navbar />
-            <main className='px-6 py-8 max-w-screen-xl mx-auto'>{children}</main>
-          </StatusContextProvider>
+          <Navbar />
+          <main className='px-6 py-8 max-w-screen-xl mx-auto'>{children}</main>
+          <ToastContainer />
         </Theme>
       </body>
     </html>
