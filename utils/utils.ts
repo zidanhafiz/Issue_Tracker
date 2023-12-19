@@ -25,11 +25,13 @@ export const getNextStatus = (status: string) => {
 export const createStatusObject = (status: string): Status => {
   switch (status) {
     case 'OPEN':
-      return { name: 'Open', color: 'blue' };
+      return { name: 'Open', color: 'blue', value: 'OPEN' };
     case 'IN_PROGRESS':
-      return { name: 'In Progress', color: 'orange' };
+      return { name: 'In Progress', color: 'orange', value: 'IN_PROGRESS' };
+    case 'CLOSED':
+      return { name: 'Closed', color: 'green', value: 'CLOSED' };
     default:
-      return { name: 'Closed', color: 'green' };
+      return {} as Status;
   }
 };
 
