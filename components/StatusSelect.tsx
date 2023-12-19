@@ -1,15 +1,28 @@
 import { Select } from '@radix-ui/themes';
+import { Dispatch, SetStateAction } from 'react';
 
 type Status = {
   name: string;
   value: string;
 };
 
-const StatusSelect = ({ status }: { status: Status[] }) => {
+type StatusSelectProps = {
+  status: Status[];
+  value: string;
+  setStatus: Dispatch<SetStateAction<string>>;
+};
+
+const StatusSelect = ({ status, value, setStatus }: StatusSelectProps) => {
   return (
-    <Select.Root defaultValue={status[0].value}>
+    <Select.Root
+      value={value}
+      onValueChange={(e) => setStatus(e)}
+    >
       <Select.Trigger />
-      <Select.Content position='popper'>
+      <Select.Content
+        position='popper'
+        color='iris'
+      >
         <Select.Group>
           {status.map((s) => (
             <Select.Item

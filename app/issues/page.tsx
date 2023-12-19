@@ -1,11 +1,16 @@
-import { Button, Flex, Heading, Separator } from '@radix-ui/themes';
+import { Button, Flex, Heading, Separator, Text } from '@radix-ui/themes';
 import Link from 'next/link';
 import IssueInputSearch from './IssueSearch';
 import IssueList from './IssueList';
 import { getIssues } from '@/utils/httpRequest';
 
-const IssuesPage = async () => {
-  const issues: Issue[] = await getIssues();
+const IssuesPage = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) => {
+  const [search, status] = [searchParams.q, searchParams.s];
+  const issues: Issue[] = await getIssues(search, status);
 
   return (
     <>
@@ -24,13 +29,21 @@ const IssuesPage = async () => {
       <div className='mt-6'>
         <IssueInputSearch />
         <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mt-8'>
-          {issues &&
+          {issues.length > 0 ? (
             issues.map((issue) => (
               <IssueList
                 key={issue.id}
                 issue={issue}
               />
-            ))}
+            ))
+          ) : (
+            <Text
+              as='div'
+              className='text-center md:col-span-3'
+            >
+              <em>Issue Not Found!</em>
+            </Text>
+          )}
         </div>
       </div>
     </>

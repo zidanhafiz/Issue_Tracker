@@ -1,25 +1,26 @@
 'use client';
-import StatusSelect from '@/components/CategorySelect';
-import { Box, Flex, Select, Text, TextField } from '@radix-ui/themes';
+import StatusSelect from '@/components/StatusSelect';
+import { Box, Flex, IconButton, Text, TextField } from '@radix-ui/themes';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
 
-const status = [
+const allStatus = [
   {
     name: 'All',
-    value: 'all',
+    value: 'ALL',
   },
   {
     name: 'Open',
-    value: 'open',
+    value: 'OPEN',
   },
   {
     name: 'In Progress',
-    value: 'in-progress',
+    value: 'IN_PROGRESS',
   },
   {
     name: 'Closed',
-    value: 'closed',
+    value: 'CLOSED',
   },
 ];
 
@@ -27,25 +28,46 @@ const IssueSearch = () => {
   const router = useRouter();
   const refreshPage = () => router.refresh();
   const currentPath = usePathname();
+  const [search, setSearch] = useState<string>('');
+  const [status, setStatus] = useState<string>('ALL');
 
   useEffect(() => {
     router.refresh();
   }, [router, currentPath]);
 
+  const submitSearch = (e: FormEvent) => {
+    e.preventDefault();
+    const searchFormat = search.toLowerCase();
+    const statusFormat = status.toLowerCase();
+    router.push(`/issues?q=${searchFormat}&s=${statusFormat}`);
+  };
+
   return (
     <Box className='max-w-screen-xl mx-auto'>
-      <Flex
-        justify='center'
-        width='100%'
-        gap='2'
-        mb='7'
+      <form
+        className='flex justify-center w-full gap-4 mb-8'
+        onSubmit={submitSearch}
       >
+        <StatusSelect
+          status={allStatus}
+          value={status}
+          setStatus={setStatus}
+        />
         <TextField.Input
           placeholder='Search Issue'
           width='100%'
+          color='iris'
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        <StatusSelect status={status} />
-      </Flex>
+        <IconButton
+          radius='full'
+          color='iris'
+          type='submit'
+        >
+          <FaSearch />
+        </IconButton>
+      </form>
       <Flex
         justify='center'
         gap='8'

@@ -11,9 +11,12 @@ type CreateIssue = {
 export const baseUrl = process.env.BASE_URL;
 export const publicUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-export const getIssues = async () => {
+export const getIssues = async (q?: string | string[], s?: string | string[]) => {
+  const search = q === undefined ? '' : q;
+  const status = s === undefined ? '' : s;
+
   try {
-    const res = await fetch(`${baseUrl}/api/issues`, {
+    const res = await fetch(`${baseUrl}/api/issues?q=${search}&s=${status}`, {
       next: { tags: ['issues'] },
     });
 
