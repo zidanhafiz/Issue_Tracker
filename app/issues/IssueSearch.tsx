@@ -1,10 +1,10 @@
 'use client';
-import CategorySelect from '@/components/CategorySelect';
+import StatusSelect from '@/components/CategorySelect';
 import { Box, Flex, Select, Text, TextField } from '@radix-ui/themes';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-const categories = [
+const status = [
   {
     name: 'All',
     value: 'all',
@@ -23,7 +23,7 @@ const categories = [
   },
 ];
 
-const IssueInputSearch = () => {
+const IssueSearch = () => {
   const router = useRouter();
   const refreshPage = () => router.refresh();
   const currentPath = usePathname();
@@ -44,7 +44,7 @@ const IssueInputSearch = () => {
           placeholder='Search Issue'
           width='100%'
         />
-        <CategorySelect categories={categories} />
+        <StatusSelect status={status} />
       </Flex>
       <Flex
         justify='center'
@@ -72,4 +72,4 @@ const IssueInputSearch = () => {
   );
 };
 
-export default IssueInputSearch;
+export default IssueSearch;

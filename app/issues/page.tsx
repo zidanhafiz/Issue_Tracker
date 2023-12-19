@@ -1,6 +1,6 @@
 import { Button, Flex, Heading, Separator } from '@radix-ui/themes';
 import Link from 'next/link';
-import IssueInputSearch from './IssueInputSearch';
+import IssueInputSearch from './IssueSearch';
 import IssueList from './IssueList';
 import { getIssues } from '@/utils/httpRequest';
 

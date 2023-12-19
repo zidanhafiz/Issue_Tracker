@@ -1,22 +1,22 @@
 import { Select } from '@radix-ui/themes';
 
-type Categories = {
+type Status = {
   name: string;
   value: string;
 };
 
-const CategorySelect = ({ categories }: { categories: Categories[] }) => {
+const StatusSelect = ({ status }: { status: Status[] }) => {
   return (
-    <Select.Root defaultValue={categories[0].value}>
+    <Select.Root defaultValue={status[0].value}>
       <Select.Trigger />
       <Select.Content position='popper'>
         <Select.Group>
-          {categories.map((c) => (
+          {status.map((s) => (
             <Select.Item
-              key={c.name}
-              value={c.value}
+              key={s.name}
+              value={s.value}
             >
-              {c.name}
+              {s.name}
             </Select.Item>
           ))}
         </Select.Group>
@@ -25,4 +25,4 @@ const CategorySelect = ({ categories }: { categories: Categories[] }) => {
   );
 };
 
-export default CategorySelect;
+export default StatusSelect;
