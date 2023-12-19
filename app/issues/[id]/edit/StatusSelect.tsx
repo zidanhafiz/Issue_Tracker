@@ -11,14 +11,15 @@ type Status = {
 
 const StatusSelect = React.forwardRef<
   HTMLSelectElement,
-  { issueStatus: string; status: Status[] } & ReturnType<UseFormRegister<IssueFormUpdate>>
->(({ onChange, onBlur, issueStatus, status }, ref) => (
+  { status: Status[]; defaultValue: string } & ReturnType<
+    UseFormRegister<IssueFormUpdate>
+  >
+>(({ onChange, name, status, defaultValue }) => (
   <>
     <Select.Root
-      defaultValue={issueStatus}
-      {...onChange}
-      {...onBlur}
-      {...ref}
+      name={name}
+      defaultValue={defaultValue}
+      onValueChange={(value) => onChange({ target: { name, value } })}
     >
       <Select.Trigger />
       <Select.Content position='popper'>

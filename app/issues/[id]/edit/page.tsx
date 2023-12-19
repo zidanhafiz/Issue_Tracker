@@ -1,10 +1,10 @@
 'use client';
 import { updateIssueSchema } from '@/app/validation-schema';
 import Spinner from '@/components/Spinner';
-import { getIssueDetail } from '@/utils/httpRequest';
+import { getIssueDetail, updateIssue } from '@/utils/httpRequest';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Flex, Text, TextFieldInput } from '@radix-ui/themes';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import SimpleMDE from 'react-simplemde-editor';
@@ -13,7 +13,7 @@ import { z } from 'zod';
 import Header from './Header';
 import BackButton from '@/components/BackButton';
 import StatusSelect from './StatusSelect';
-import { createStatusObject } from '@/utils/utils';
+import ErrorCallout from '@/components/ErrorCallout';
 
 const allStatus = [
   {
@@ -35,14 +35,22 @@ export type IssueFormUpdate = z.infer<typeof updateIssueSchema>;
 const EditPage = () => {
   const params = useParams();
   const id = Number(params.id);
-
-  const { register, control, handleSubmit } = useForm<IssueFormUpdate>({
-    resolver: zodResolver(updateIssueSchema),
-  });
-
+  const router = useRouter();
   const [issue, setIssue] = useState({} as Issue);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [status, setStatus] = useState({} as Status);
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IssueFormUpdate>({
+    resolver: zodResolver(updateIssueSchema),
+    values: {
+      title: issue.title,
+      description: issue.description,
+      status: issue.status,
+    },
+  });
 
   useEffect(() => {
     const getIssue = async () => {
@@ -52,17 +60,30 @@ const EditPage = () => {
     getIssue();
   }, [id]);
 
-  useEffect(() => {
-    const newStat = createStatusObject(issue.status);
-    setStatus(newStat);
-  }, [issue]);
+  const updateData = handleSubmit(async (data: IssueFormUpdate) => {
+    setIsSubmit(true);
+    const newIssue = {
+      ...issue,
+      title: data.title,
+      description: data.description,
+      status: data.status,
+    };
+    await updateIssue(id, newIssue, () => {
+      setIsSubmit(false);
+      router.push('/issues');
+    });
+  });
 
   return (
     <Box>
       <BackButton />
       <Header issue={issue} />
-      {status?.value && (
-        <form className='mt-8 space-y-4'>
+      {issue?.title && (
+        <form
+          className='mt-8 space-y-4'
+          onSubmit={updateData}
+        >
+          <ErrorCallout message={errors.title?.message} />
           <TextFieldInput
             placeholder='New Title'
             {...register('title')}
@@ -74,10 +95,11 @@ const EditPage = () => {
             <Text as='label'>Status</Text>
             <StatusSelect
               status={allStatus}
-              issueStatus={status.value}
+              defaultValue={issue.status}
               {...register('status')}
             />
           </Flex>
+          <ErrorCallout message={errors.description?.message} />
           <Controller
             name='description'
             control={control}
