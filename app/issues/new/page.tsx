@@ -1,5 +1,5 @@
 'use client';
-import { Button, TextFieldInput } from '@radix-ui/themes';
+import { Button, Flex, TextFieldInput } from '@radix-ui/themes';
 import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
 import { useForm, Controller } from 'react-hook-form';
@@ -58,7 +58,18 @@ const NewIssuePage = () => {
             />
           )}
         />
-        <Button disabled={isSubmit}>{isSubmit && <Spinner />}Create Issue</Button>
+        <Flex
+          gap='2'
+          justify='end'
+        >
+          <Button
+            disabled={isSubmit}
+            color='ruby'
+          >
+            Discard
+          </Button>
+          <Button disabled={isSubmit}>{isSubmit && <Spinner />}Create Issue</Button>
+        </Flex>
       </form>
     </>
   );
