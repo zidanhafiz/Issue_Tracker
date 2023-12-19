@@ -12,6 +12,7 @@ import ErrorCallout from '@/components/ErrorCallout';
 import Spinner from '@/components/Spinner';
 import BackButton from '@/components/BackButton';
 import { createIssue } from '@/utils/httpRequest';
+import DiscardButton from '@/components/DiscardButton';
 
 export type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -62,13 +63,13 @@ const NewIssuePage = () => {
           gap='2'
           justify='end'
         >
+          <DiscardButton isSubmit={isSubmit} />
           <Button
+            type='submit'
             disabled={isSubmit}
-            color='ruby'
           >
-            Discard
+            {isSubmit && <Spinner />}Create Issue
           </Button>
-          <Button disabled={isSubmit}>{isSubmit && <Spinner />}Create Issue</Button>
         </Flex>
       </form>
     </>

@@ -14,6 +14,7 @@ import Header from './Header';
 import BackButton from '@/components/BackButton';
 import StatusSelect from './StatusSelect';
 import ErrorCallout from '@/components/ErrorCallout';
+import DiscardButton from '@/components/DiscardButton';
 
 const allStatus = [
   {
@@ -114,12 +115,7 @@ const EditPage = () => {
             gap='2'
             justify='end'
           >
-            <Button
-              disabled={isSubmit}
-              color='ruby'
-            >
-              Discard
-            </Button>
+            <DiscardButton isSubmit={isSubmit} />
             <Button disabled={isSubmit}>{isSubmit && <Spinner />}Update Issue</Button>
           </Flex>
         </form>

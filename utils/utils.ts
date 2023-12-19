@@ -46,9 +46,9 @@ export const formatDate = (dateString: string) => {
 
 export class Modal {
   message: Message;
-  handle: (id: number) => Promise<void>;
+  handle: (id?: number) => Promise<void> | void;
 
-  constructor(prop: Message, handle: (id: number) => Promise<void>) {
+  constructor(prop: Message, handle: (id?: number) => Promise<void> | void) {
     this.message = prop;
     this.handle = handle;
   }

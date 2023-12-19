@@ -2,13 +2,20 @@ import { AlertDialog, Button, Flex } from '@radix-ui/themes';
 import { ReactNode } from 'react';
 
 type ModalButton = {
-  id: number;
+  id?: number;
   children: ReactNode;
   message: Message;
-  handle: (id: number) => Promise<void>;
+  handle: (id?: number) => Promise<void> | void;
 };
 
 const ModalButton = ({ id, children, message, handle }: ModalButton) => {
+  const onClick = () => {
+    if (id) {
+      return handle(id);
+    }
+    return handle();
+  };
+
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger>{children}</AlertDialog.Trigger>
@@ -32,7 +39,7 @@ const ModalButton = ({ id, children, message, handle }: ModalButton) => {
             <Button
               variant='solid'
               color={message?.yes?.color || 'red'}
-              onClick={() => handle(id)}
+              onClick={onClick}
             >
               {message?.yes?.name || 'Yes'}
             </Button>
