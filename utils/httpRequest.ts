@@ -29,9 +29,9 @@ export const getIssues = async () => {
   }
 };
 
-export const getIssueDetail = async (id: number) => {
+export const getIssueDetail = async (id: number, isClient = false) => {
   try {
-    const res = await fetch(`${baseUrl}/api/issues/${id}`, {
+    const res = await fetch(`${isClient ? publicUrl : baseUrl}/api/issues/${id}`, {
       next: { tags: ['issues'] },
     });
 
