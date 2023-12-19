@@ -1,4 +1,3 @@
-
 type Issue = {
   id: number;
   title: string;
@@ -13,6 +12,7 @@ type Color = 'ruby' | 'blue' | 'orange' | 'green';
 type Status = {
   name: string;
   color: Color;
+  value: string;
 };
 
 type IssueStatus = {
@@ -40,4 +40,3 @@ type Message = {
     name?: string;
   };
 };
-

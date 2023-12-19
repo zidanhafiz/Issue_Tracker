@@ -35,9 +35,9 @@ const IssueDetails = async ({ params }: { params: { id: string } }) => {
         </Text>
         <Badge
           variant='soft'
-          color={status.color}
+          color={status?.color}
         >
-          {status.name}
+          {status?.name}
         </Badge>
       </Flex>
       <Separator size='4' />
@@ -62,9 +62,9 @@ const IssueDetails = async ({ params }: { params: { id: string } }) => {
         </Badge>
         <Badge
           variant='soft'
-          color={status.name === 'Closed' ? 'green' : 'orange'}
+          color={status?.name === 'Closed' ? 'green' : 'orange'}
         >
-          {status.name === 'Closed' ? `Closed at: ${closedAt}` : 'Not Finished'}
+          {status?.name === 'Closed' ? `Closed at: ${closedAt}` : 'Not Finished'}
         </Badge>
       </Flex>
       <Separator size='4' />
