@@ -2,33 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma/client';
 import { createIssueSchema } from '@/app/validation-schema';
 import { revalidateTag } from 'next/cache';
-
-enum Status {
-  OPEN = 'OPEN',
-  IN_PROGRESS = 'IN_PROGRESS',
-  CLOSED = 'CLOSED',
-}
-
-const getStatusType = (status?: string | null) => {
-  switch (status) {
-    case 'open':
-      return Status.OPEN;
-    case 'in_progress':
-      return Status.IN_PROGRESS;
-    case 'closed':
-      return Status.CLOSED;
-    case 'all':
-      return 'ALL';
-    case '':
-      return 'ALL';
-    case null:
-      return 'ALL';
-    case undefined:
-      return 'ALL';
-    default:
-      return false;
-  }
-};
+import { getStatusType } from '@/utils/utils';
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;

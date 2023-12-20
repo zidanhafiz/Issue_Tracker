@@ -1,5 +1,32 @@
 import { toast } from 'react-toastify';
 
+enum StatusEnum {
+  OPEN = 'OPEN',
+  IN_PROGRESS = 'IN_PROGRESS',
+  CLOSED = 'CLOSED',
+}
+
+export const getStatusType = (status?: string | null) => {
+  switch (status) {
+    case 'open':
+      return StatusEnum.OPEN;
+    case 'in_progress':
+      return StatusEnum.IN_PROGRESS;
+    case 'closed':
+      return StatusEnum.CLOSED;
+    case 'all':
+      return 'ALL';
+    case '':
+      return 'ALL';
+    case null:
+      return 'ALL';
+    case undefined:
+      return 'ALL';
+    default:
+      return false;
+  }
+};
+
 export const createStatus = (status: string) => {
   switch (status) {
     case 'OPEN':
