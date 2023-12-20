@@ -9,8 +9,8 @@ const IssuesPage = async ({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
-  const [search, status] = [searchParams.q, searchParams.s];
-  const issues: Issue[] = await getIssues(search, status);
+  const [search, status, sort] = [searchParams.q, searchParams.s, searchParams.b];
+  const issues: Issue[] = await getIssues(search, status, sort);
 
   return (
     <>

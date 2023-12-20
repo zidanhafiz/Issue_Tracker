@@ -1,5 +1,23 @@
 import { toast } from 'react-toastify';
 
+enum SortBy {
+  ASC = 'asc',
+  DESC = 'desc',
+}
+
+export const getSortType = (sort?: string | null) => {
+  switch (sort) {
+    case '':
+      return SortBy.ASC;
+    case null:
+      return SortBy.ASC;
+    case undefined:
+      return SortBy.ASC;
+    default:
+      return sort as SortBy;
+  }
+};
+
 enum StatusEnum {
   OPEN = 'OPEN',
   IN_PROGRESS = 'IN_PROGRESS',
