@@ -10,7 +10,7 @@ const BackButton = () => {
     router.back();
   };
 
-  if (currentPath !== '/issues/new') {
+  if (currentPath !== '/issues/new' && !currentPath.includes('/edit')) {
     return (
       <Link
         onClick={onClick}

@@ -3,6 +3,8 @@ import ButtonGroup from './ButtonGroup';
 import BackButton from '@/components/BackButton';
 import { formatDate, createStatusObject } from '@/utils/utils';
 import { getIssueDetail } from '@/utils/httpRequest';
+import Markdown from 'react-markdown';
+import styles from '@/app/markdown.module.css';
 
 const IssueDetails = async ({ params }: { params: { id: string } }) => {
   const id = parseInt(params.id);
@@ -40,18 +42,16 @@ const IssueDetails = async ({ params }: { params: { id: string } }) => {
           {status?.name}
         </Badge>
       </Flex>
-      <Separator size='4' />
-      <Text
-        as='p'
-        mt='5'
-        mb='8'
-      >
-        {issue.description}
-      </Text>
+      <Separator
+        size='4'
+        mb='4'
+      />
+      <Markdown className={styles.markdown}>{issue.description}</Markdown>
       <Flex
         direction='column'
         align='end'
         gap='2'
+        mt='6'
         mb='4'
       >
         <Badge

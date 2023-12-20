@@ -5,7 +5,7 @@ import 'easymde/dist/easymde.min.css';
 import { useForm, Controller } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { createIssueSchema } from '@/app/validation-schema';
 import { z } from 'zod';
 import ErrorCallout from '@/components/ErrorCallout';
@@ -26,6 +26,13 @@ const NewIssuePage = () => {
   const router = useRouter();
   const [error, setError] = useState<boolean>(false);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
+
+  const mdeOptions = useMemo(() => {
+    return {
+      autofocus: true,
+      spellChecker: false,
+    };
+  }, []);
 
   const sendData = handleSubmit(async (data: IssueForm) => {
     await createIssue({ data, setIsSubmit, setError }, () => {
@@ -55,6 +62,7 @@ const NewIssuePage = () => {
           render={({ field }) => (
             <SimpleMDE
               placeholder='Description'
+              options={mdeOptions}
               {...field}
             />
           )}

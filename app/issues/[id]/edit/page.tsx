@@ -5,7 +5,7 @@ import { getIssueDetail, updateIssue } from '@/utils/httpRequest';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Flex, Text, TextFieldInput } from '@radix-ui/themes';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
@@ -52,6 +52,13 @@ const EditPage = () => {
       status: issue.status,
     },
   });
+
+  const mdeOptions = useMemo(() => {
+    return {
+      autofocus: true,
+      spellChecker: false,
+    };
+  }, []);
 
   useEffect(() => {
     const getIssue = async () => {
@@ -107,6 +114,7 @@ const EditPage = () => {
             render={({ field }) => (
               <SimpleMDE
                 placeholder='Description'
+                options={mdeOptions}
                 {...field}
               />
             )}
