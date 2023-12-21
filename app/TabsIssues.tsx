@@ -1,7 +1,7 @@
 'use client';
 import IssueList from '@/components/IssueList';
-import { getIssues } from '@/utils/httpRequest';
-import { Box, Tabs, Text } from '@radix-ui/themes';
+import { getIssues, publicUrl } from '@/utils/httpRequest';
+import { Box, Tabs } from '@radix-ui/themes';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -51,7 +51,7 @@ const TabsIssues = () => {
           <Tabs.Content
             key={status.name}
             value={status.value}
-            className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start gap-4'
+            className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start gap-4 mt-4'
           >
             <IssuesTabContent status={status.value} />
           </Tabs.Content>
@@ -68,7 +68,7 @@ const IssuesTabContent = ({ status }: { status: string }) => {
   useEffect(() => {
     setLoading(true);
     const fetchIssues = async () => {
-      const newIssues = await getIssues('', status, 'desc', true);
+      const newIssues = await getIssues(publicUrl, undefined, status, 'desc');
       setIssues(newIssues);
       setLoading(false);
     };

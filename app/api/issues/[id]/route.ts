@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma/client';
-import { revalidateTag } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { updateIssueSchema } from '@/app/validation-schema';
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
@@ -19,6 +19,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
   try {
     const res = await prisma.issue.delete({ where: { id: id } });
     revalidateTag('issues');
+    revalidatePath('/issues');
     return NextResponse.json(res, { status: 200 });
   } catch (err) {
     console.error('Error:', err);
@@ -43,5 +44,6 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   });
 
   revalidateTag('issues');
+  revalidatePath('/issues');
   return NextResponse.json(newIssue, { status: 201 });
 }

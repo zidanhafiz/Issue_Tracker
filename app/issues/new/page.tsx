@@ -10,11 +10,12 @@ import { z } from 'zod';
 import ErrorCallout from '@/components/ErrorCallout';
 import Spinner from '@/components/Spinner';
 import BackButton from '@/components/BackButton';
-import { createIssue } from '@/utils/httpRequest';
+import { createIssue, publicUrl } from '@/utils/httpRequest';
 import DiscardButton from '@/components/DiscardButton';
 import dynamic from 'next/dynamic';
-
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false });
+
+const url = publicUrl;
 
 export type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -36,7 +37,7 @@ const NewIssuePage = () => {
   }, []);
 
   const sendData = handleSubmit(async (data: IssueForm) => {
-    await createIssue({ data, setIsSubmit }, () => {
+    await createIssue({ url, data, setIsSubmit }, () => {
       router.push('/issues');
     });
   });

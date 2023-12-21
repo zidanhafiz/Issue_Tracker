@@ -1,17 +1,13 @@
-// import { IssueForm } from '@/app/issues/new/page';
+import { IssueForm } from '@/app/issues/new/page';
 import { Dispatch, SetStateAction } from 'react';
 import { notificationAlert } from './utils';
-import { z } from 'zod';
-import { createIssueSchema } from '@/app/validation-schema';
 
-export type IssueForm = z.infer<typeof createIssueSchema>;
+export const baseUrl = process.env.BASE_URL as string;
+export const publicUrl = process.env.NEXT_PUBLIC_BASE_URL as string;
 
-export const baseUrl = process.env.BASE_URL;
-export const publicUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
-export const getTotalIssues = async () => {
+export const getTotalIssues = async (url: string) => {
   try {
-    const res = await fetch(`${baseUrl}/api/issues/total`, {
+    const res = await fetch(`${url}/api/issues/total`, {
       cache: 'no-store',
     });
     if (!res.ok) {
@@ -24,30 +20,17 @@ export const getTotalIssues = async () => {
   }
 };
 
-type CreateIssue = {
-  data: IssueForm;
-  setIsSubmit: Dispatch<SetStateAction<boolean>>;
-};
-
 type Query = string | string[];
 
-export const getIssues = async (
-  q?: Query,
-  s?: Query,
-  b?: Query,
-  isClient: boolean = false
-) => {
+export const getIssues = async (url: string, q?: Query, s?: Query, b?: Query) => {
   const search = q === undefined ? '' : q;
   const status = s === undefined ? '' : s;
   const sort = b === undefined ? '' : b;
 
   try {
-    const res = await fetch(
-      `${isClient ? publicUrl : baseUrl}/api/issues?q=${search}&s=${status}&b=${sort}`,
-      {
-        next: { tags: ['issues'] },
-      }
-    );
+    const res = await fetch(`${url}/api/issues?q=${search}&s=${status}&b=${sort}`, {
+      next: { tags: ['issues'] },
+    });
 
     if (!res.ok) {
       throw new Error('Error get data');
@@ -61,9 +44,9 @@ export const getIssues = async (
   }
 };
 
-export const getIssueDetail = async (id: number, isClient = false) => {
+export const getIssueDetail = async (url: string, id: number) => {
   try {
-    const res = await fetch(`${isClient ? publicUrl : baseUrl}/api/issues/${id}`, {
+    const res = await fetch(`${url}/api/issues/${id}`, {
       next: { tags: ['issues'] },
     });
 
@@ -79,13 +62,19 @@ export const getIssueDetail = async (id: number, isClient = false) => {
   }
 };
 
+type CreateIssue = {
+  url: string;
+  data: IssueForm;
+  setIsSubmit: Dispatch<SetStateAction<boolean>>;
+};
+
 export const createIssue = async (
-  { data, setIsSubmit }: CreateIssue,
+  { url, data, setIsSubmit }: CreateIssue,
   callback: () => void
 ) => {
   setIsSubmit(true);
   try {
-    const res = await fetch(`${publicUrl}/api/issues`, {
+    const res = await fetch(`${url}/api/issues`, {
       method: 'POST',
       headers: {
         'Content-Type': 'aplication/json',
@@ -106,9 +95,9 @@ export const createIssue = async (
   }
 };
 
-export const deleteIssue = async (id: number) => {
+export const deleteIssue = async (url: string, id: number) => {
   try {
-    const res = await fetch(`${publicUrl}/api/issues/${id}`, {
+    const res = await fetch(`${url}/api/issues/${id}`, {
       method: 'DELETE',
     });
 
@@ -122,9 +111,14 @@ export const deleteIssue = async (id: number) => {
   }
 };
 
-export const updateIssue = async (id: number, issue: Issue, callback: () => void) => {
+export const updateIssue = async (
+  url: string,
+  id: number,
+  issue: Issue,
+  callback: () => void
+) => {
   try {
-    const res = await fetch(`${publicUrl}/api/issues/${id}`, {
+    const res = await fetch(`${url}/api/issues/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'aplication/json',

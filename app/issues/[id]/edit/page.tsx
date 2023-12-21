@@ -1,7 +1,7 @@
 'use client';
 import { updateIssueSchema } from '@/app/validation-schema';
 import Spinner from '@/components/Spinner';
-import { getIssueDetail, updateIssue } from '@/utils/httpRequest';
+import { getIssueDetail, publicUrl, updateIssue } from '@/utils/httpRequest';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Flex, Text, TextFieldInput } from '@radix-ui/themes';
 import { useParams, useRouter } from 'next/navigation';
@@ -62,7 +62,7 @@ const EditPage = () => {
 
   useEffect(() => {
     const getIssue = async () => {
-      const res = await getIssueDetail(id, true);
+      const res = await getIssueDetail(publicUrl, id);
       setIssue(res);
     };
     getIssue();
@@ -76,7 +76,7 @@ const EditPage = () => {
       description: data.description,
       status: data.status,
     };
-    await updateIssue(id, newIssue, () => {
+    await updateIssue(publicUrl, id, newIssue, () => {
       setIsSubmit(false);
       router.push('/issues');
     });

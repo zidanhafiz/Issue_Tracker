@@ -2,13 +2,13 @@ import { Badge, Box, Flex, Heading, Separator, Text } from '@radix-ui/themes';
 import ButtonGroup from './ButtonGroup';
 import BackButton from '@/components/BackButton';
 import { formatDate, createStatusObject } from '@/utils/utils';
-import { getIssueDetail } from '@/utils/httpRequest';
+import { baseUrl, getIssueDetail } from '@/utils/httpRequest';
 import Markdown from 'react-markdown';
 import styles from '@/app/markdown.module.css';
 
 const IssueDetails = async ({ params }: { params: { id: string } }) => {
   const id = parseInt(params.id);
-  const issue: Issue = await getIssueDetail(id);
+  const issue: Issue = await getIssueDetail(baseUrl, id);
   const openedAt = formatDate(issue.createdAt);
   const closedAt = formatDate(issue.updatedAt);
   const status = createStatusObject(issue.status);

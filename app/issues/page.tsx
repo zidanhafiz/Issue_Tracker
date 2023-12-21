@@ -2,7 +2,7 @@ import { Button, Flex, Heading, Separator, Text } from '@radix-ui/themes';
 import Link from 'next/link';
 import IssueInputSearch from './IssueSearch';
 import IssueList from '@/components/IssueList';
-import { getIssues } from '@/utils/httpRequest';
+import { baseUrl, getIssues } from '@/utils/httpRequest';
 
 const IssuesPage = async ({
   searchParams,
@@ -10,7 +10,7 @@ const IssuesPage = async ({
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
   const [search, status, sort] = [searchParams.q, searchParams.s, searchParams.b];
-  const issues: Issue[] = await getIssues(search, status, sort);
+  const issues: Issue[] = await getIssues(baseUrl, search, status, sort);
 
   return (
     <>

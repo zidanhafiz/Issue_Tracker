@@ -1,10 +1,10 @@
 import { Box, Heading, Separator } from '@radix-ui/themes';
 import TabsIssues from './TabsIssues';
 import CardStatus from './CardStatus';
-import { getTotalIssues } from '@/utils/httpRequest';
+import { baseUrl, getTotalIssues } from '@/utils/httpRequest';
 
 export default async function Home() {
-  const totalIssues: TotalIssues[] = await getTotalIssues();
+  const totalIssues: TotalIssues[] = await getTotalIssues(baseUrl);
 
   return (
     <Box>
