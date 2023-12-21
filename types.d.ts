@@ -40,3 +40,8 @@ type Message = {
     name?: string;
   };
 };
+
+type TotalIssues = {
+  name: string;
+  total: number;
+};

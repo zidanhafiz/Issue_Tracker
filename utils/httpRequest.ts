@@ -2,26 +2,49 @@ import { IssueForm } from '@/app/issues/new/page';
 import { Dispatch, SetStateAction } from 'react';
 import { notificationAlert } from './utils';
 
+export const baseUrl = process.env.BASE_URL;
+export const publicUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+export const getTotalIssues = async () => {
+  try {
+    const res = await fetch(`${baseUrl}/api/issues/total`, {
+      cache: 'no-store',
+    });
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+};
+
 type CreateIssue = {
   data: IssueForm;
   setIsSubmit: Dispatch<SetStateAction<boolean>>;
   setError: Dispatch<SetStateAction<boolean>>;
 };
 
-export const baseUrl = process.env.BASE_URL;
-export const publicUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
 type Query = string | string[];
 
-export const getIssues = async (q?: Query, s?: Query, b?: Query) => {
+export const getIssues = async (
+  q?: Query,
+  s?: Query,
+  b?: Query,
+  isClient: boolean = false
+) => {
   const search = q === undefined ? '' : q;
   const status = s === undefined ? '' : s;
   const sort = b === undefined ? '' : b;
 
   try {
-    const res = await fetch(`${baseUrl}/api/issues?q=${search}&s=${status}&b=${sort}`, {
-      next: { tags: ['issues'] },
-    });
+    const res = await fetch(
+      `${isClient ? publicUrl : baseUrl}/api/issues?q=${search}&s=${status}&b=${sort}`,
+      {
+        next: { tags: ['issues'] },
+      }
+    );
 
     if (!res.ok) {
       throw new Error('Error get data');

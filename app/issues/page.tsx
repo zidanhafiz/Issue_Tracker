@@ -1,7 +1,7 @@
 import { Button, Flex, Heading, Separator, Text } from '@radix-ui/themes';
 import Link from 'next/link';
 import IssueInputSearch from './IssueSearch';
-import IssueList from './IssueList';
+import IssueList from '@/components/IssueList';
 import { getIssues } from '@/utils/httpRequest';
 
 const IssuesPage = async ({
