@@ -1,6 +1,10 @@
-import { IssueForm } from '@/app/issues/new/page';
+// import { IssueForm } from '@/app/issues/new/page';
 import { Dispatch, SetStateAction } from 'react';
 import { notificationAlert } from './utils';
+import { z } from 'zod';
+import { createIssueSchema } from '@/app/validation-schema';
+
+export type IssueForm = z.infer<typeof createIssueSchema>;
 
 export const baseUrl = process.env.BASE_URL;
 export const publicUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -23,7 +27,6 @@ export const getTotalIssues = async () => {
 type CreateIssue = {
   data: IssueForm;
   setIsSubmit: Dispatch<SetStateAction<boolean>>;
-  setError: Dispatch<SetStateAction<boolean>>;
 };
 
 type Query = string | string[];
@@ -77,7 +80,7 @@ export const getIssueDetail = async (id: number, isClient = false) => {
 };
 
 export const createIssue = async (
-  { data, setIsSubmit, setError }: CreateIssue,
+  { data, setIsSubmit }: CreateIssue,
   callback: () => void
 ) => {
   setIsSubmit(true);
@@ -98,7 +101,6 @@ export const createIssue = async (
     callback();
   } catch (error) {
     setIsSubmit(false);
-    setError(true);
     notificationAlert('error', 'Error create issue!');
     console.error(error);
   }

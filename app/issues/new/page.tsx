@@ -1,6 +1,5 @@
 'use client';
 import { Button, Flex, TextFieldInput } from '@radix-ui/themes';
-import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
 import { useForm, Controller } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
@@ -13,6 +12,9 @@ import Spinner from '@/components/Spinner';
 import BackButton from '@/components/BackButton';
 import { createIssue } from '@/utils/httpRequest';
 import DiscardButton from '@/components/DiscardButton';
+import dynamic from 'next/dynamic';
+
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false });
 
 export type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -24,7 +26,6 @@ const NewIssuePage = () => {
     formState: { errors },
   } = useForm<IssueForm>({ resolver: zodResolver(createIssueSchema) });
   const router = useRouter();
-  const [error, setError] = useState<boolean>(false);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
   const mdeOptions = useMemo(() => {
@@ -35,7 +36,7 @@ const NewIssuePage = () => {
   }, []);
 
   const sendData = handleSubmit(async (data: IssueForm) => {
-    await createIssue({ data, setIsSubmit, setError }, () => {
+    await createIssue({ data, setIsSubmit }, () => {
       router.push('/issues');
     });
   });
@@ -47,7 +48,6 @@ const NewIssuePage = () => {
         className='space-y-4 mt-4'
         onSubmit={sendData}
       >
-        {error && <ErrorCallout message='An unexpected error occur.' />}
         <ErrorCallout message={errors.title?.message} />
         <TextFieldInput
           placeholder='Title'
