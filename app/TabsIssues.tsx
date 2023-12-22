@@ -4,6 +4,7 @@ import { getIssues, publicUrl } from '@/utils/httpRequest';
 import { Box, Tabs } from '@radix-ui/themes';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 const allStatus = [
   {
@@ -43,7 +44,7 @@ const TabsIssues = () => {
         ))}
       </Tabs.List>
       <Box
-        px='4'
+        px='2'
         pt='3'
         pb='2'
       >
@@ -78,7 +79,12 @@ const IssuesTabContent = ({ status }: { status: string }) => {
   if (loading) {
     return (
       <>
-        <p>Loading....</p>
+        <Skeleton height='120px' />
+        <Skeleton height='120px' />
+        <Skeleton height='120px' />
+        <Skeleton height='120px' />
+        <Skeleton height='120px' />
+        <Skeleton height='120px' />
       </>
     );
   }

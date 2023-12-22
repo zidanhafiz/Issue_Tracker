@@ -15,6 +15,7 @@ import BackButton from '@/components/BackButton';
 import StatusSelect from './StatusSelect';
 import ErrorCallout from '@/components/ErrorCallout';
 import DiscardButton from '@/components/DiscardButton';
+import Loading from './loading';
 
 const allStatus = [
   {
@@ -82,11 +83,11 @@ const EditPage = () => {
     });
   });
 
-  return (
-    <Box>
-      <BackButton />
-      <Header issue={issue} />
-      {issue?.title && (
+  if (issue?.title) {
+    return (
+      <Box>
+        <BackButton />
+        <Header issue={issue} />
         <form
           className='mt-8 space-y-4'
           onSubmit={updateData}
@@ -127,9 +128,11 @@ const EditPage = () => {
             <Button disabled={isSubmit}>{isSubmit && <Spinner />}Update Issue</Button>
           </Flex>
         </form>
-      )}
-    </Box>
-  );
+      </Box>
+    );
+  }
+
+  return <Loading />;
 };
 
 export default EditPage;
