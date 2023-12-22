@@ -1,8 +1,8 @@
-import { Button, Flex, Heading, Separator, Text } from '@radix-ui/themes';
+import { Box, Button, Flex, Heading, Separator, Text } from '@radix-ui/themes';
 import Link from 'next/link';
 import IssueInputSearch from './IssueSearch';
-import IssueList from '@/components/IssueList';
 import { baseUrl, getIssues } from '@/utils/httpRequest';
+import IssuesContainer from './IssuesContainer';
 
 const IssuesPage = async ({
   searchParams,
@@ -26,26 +26,10 @@ const IssuesPage = async ({
       </Flex>
       <hr />
       <Separator />
-      <div className='mt-6'>
+      <Box className='mt-6'>
         <IssueInputSearch />
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mt-8'>
-          {issues.length > 0 ? (
-            issues.map((issue) => (
-              <IssueList
-                key={issue.id}
-                issue={issue}
-              />
-            ))
-          ) : (
-            <Text
-              as='div'
-              className='text-center md:col-span-3'
-            >
-              <em>Issue Not Found!</em>
-            </Text>
-          )}
-        </div>
-      </div>
+        <IssuesContainer issues={issues} />
+      </Box>
     </>
   );
 };

@@ -35,7 +35,6 @@ const IssueSearch = () => {
   const refreshPage = () => router.refresh();
 
   useEffect(() => {
-    router.prefetch('/issues')
     router.refresh();
   }, [router, currentPath]);
 

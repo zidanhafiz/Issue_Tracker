@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma/client';
 import { createIssueSchema } from '@/app/validation-schema';
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 import { getSortType, getStatusType } from '@/utils/utils';
 
 export async function GET(req: NextRequest) {
@@ -89,6 +89,5 @@ export async function POST(req: NextRequest) {
   });
 
   revalidateTag('issues');
-  revalidatePath('/issues')
   return NextResponse.json(newIssue, { status: 201 });
 }
