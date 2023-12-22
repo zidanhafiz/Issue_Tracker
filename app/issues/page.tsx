@@ -3,6 +3,12 @@ import Link from 'next/link';
 import IssueInputSearch from './IssueSearch';
 import { baseUrl, getIssues } from '@/utils/httpRequest';
 import IssuesContainer from './IssuesContainer';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Issue Tracker | Issues',
+  description: 'Check your app issue',
+};
 
 const IssuesPage = async ({
   searchParams,

@@ -16,8 +16,30 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Issue Tracker',
+  title: 'Issue Tracker | Dashboard',
   description: 'Check your app issue',
+  openGraph: {
+    title: 'Issue Tracker',
+    description:
+      'Issue tracker website for write, check or tracking your issues that you have.',
+    url: 'https://nextjs.org',
+    siteName: 'Next.js',
+    images: [
+      {
+        url: 'https://nextjs.org/og.png',
+        width: 800,
+        height: 600,
+      },
+      {
+        url: 'https://nextjs.org/og-alt.png',
+        width: 1800,
+        height: 1600,
+        alt: 'My custom alt',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
