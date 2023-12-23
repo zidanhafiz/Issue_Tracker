@@ -25,6 +25,19 @@ export const metadata: Metadata = {
       'Issue tracker website for write, check or tracking your issues that you have.',
     url: 'https://issue-tracker-megumi.vercel.app',
     siteName: 'Issue Tracker',
+    images: [
+      {
+        url: './opengraph-image.png',
+        width: 800,
+        height: 600,
+      },
+      {
+        url: './opengraph-image.png',
+        width: 1800,
+        height: 1600,
+        alt: 'Issue Tracker',
+      },
+    ],
     locale: 'id_ID',
     type: 'website',
   },
