@@ -16,7 +16,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('http://localhost:3000'),
+  metadataBase: new URL('https://issue-tracker-megumi.vercel.app'),
   title: 'Issue Tracker | Dashboard',
   description: 'Check your app issue',
   openGraph: {
