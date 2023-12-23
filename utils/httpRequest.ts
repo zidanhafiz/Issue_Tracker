@@ -3,7 +3,6 @@ import { Dispatch, SetStateAction } from 'react';
 import { notificationAlert } from './utils';
 
 export const baseUrl = process.env.BASE_URL as string;
-export const publicUrl = process.env.NEXT_PUBLIC_BASE_URL as string;
 
 export const getTotalIssues = async (url: string) => {
   try {
@@ -22,13 +21,18 @@ export const getTotalIssues = async (url: string) => {
 
 type Query = string | string[];
 
-export const getIssues = async (url: string, q?: Query, s?: Query, b?: Query) => {
+export const getIssues = async (url: string | null, q?: Query, s?: Query, b?: Query) => {
   const search = q === undefined ? '' : q;
   const status = s === undefined ? '' : s;
   const sort = b === undefined ? '' : b;
 
+  const fetchUrl =
+    url !== null
+      ? `${url}/api/issues?q=${search}&s=${status}&b=${sort}`
+      : `/api/issues?q=${search}&s=${status}&b=${sort}`;
+
   try {
-    const res = await fetch(`${url}/api/issues?q=${search}&s=${status}&b=${sort}`, {
+    const res = await fetch(fetchUrl, {
       next: { tags: ['issues'] },
     });
 
@@ -44,9 +48,10 @@ export const getIssues = async (url: string, q?: Query, s?: Query, b?: Query) =>
   }
 };
 
-export const getIssueDetail = async (url: string, id: number) => {
+export const getIssueDetail = async (url: string | null, id: number) => {
+  const fetchUrl = url !== null ? `${url}/api/issues/${id}` : `/api/issues/${id}`;
   try {
-    const res = await fetch(`${url}/api/issues/${id}`, {
+    const res = await fetch(fetchUrl, {
       next: { tags: ['issues'] },
     });
 
@@ -63,18 +68,17 @@ export const getIssueDetail = async (url: string, id: number) => {
 };
 
 type CreateIssue = {
-  url: string;
   data: IssueForm;
   setIsSubmit: Dispatch<SetStateAction<boolean>>;
 };
 
 export const createIssue = async (
-  { url, data, setIsSubmit }: CreateIssue,
+  { data, setIsSubmit }: CreateIssue,
   callback: () => void
 ) => {
   setIsSubmit(true);
   try {
-    const res = await fetch(`${url}/api/issues`, {
+    const res = await fetch(`/api/issues`, {
       method: 'POST',
       headers: {
         'Content-Type': 'aplication/json',
@@ -95,9 +99,9 @@ export const createIssue = async (
   }
 };
 
-export const deleteIssue = async (url: string, id: number) => {
+export const deleteIssue = async (id: number) => {
   try {
-    const res = await fetch(`${url}/api/issues/${id}`, {
+    const res = await fetch(`/api/issues/${id}`, {
       method: 'DELETE',
     });
 
@@ -111,14 +115,9 @@ export const deleteIssue = async (url: string, id: number) => {
   }
 };
 
-export const updateIssue = async (
-  url: string,
-  id: number,
-  issue: Issue,
-  callback: () => void
-) => {
+export const updateIssue = async (id: number, issue: Issue, callback: () => void) => {
   try {
-    const res = await fetch(`${url}/api/issues/${id}`, {
+    const res = await fetch(`/api/issues/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'aplication/json',

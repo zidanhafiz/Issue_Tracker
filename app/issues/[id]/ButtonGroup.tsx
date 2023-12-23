@@ -1,6 +1,6 @@
 'use client';
 import ModalButton from '@/components/ModalButton';
-import { deleteIssue, publicUrl, updateIssue } from '@/utils/httpRequest';
+import { deleteIssue, updateIssue } from '@/utils/httpRequest';
 import { Modal, createStatus, getNextStatus } from '@/utils/utils';
 import { Box, Button, Flex } from '@radix-ui/themes';
 import Link from 'next/link';
@@ -16,7 +16,7 @@ const ButtonGroup = ({ issue }: { issue: Issue }) => {
 
   const deleteHandle = async () => {
     setLoading(true);
-    await deleteIssue(publicUrl, id);
+    await deleteIssue(id);
     setLoading(false);
     router.push('/issues');
   };
@@ -28,7 +28,7 @@ const ButtonGroup = ({ issue }: { issue: Issue }) => {
       ...issue,
       status: newStatus,
     };
-    await updateIssue(publicUrl, id, newIssue, () => {
+    await updateIssue(id, newIssue, () => {
       setLoading(false);
       router.push('/issues');
     });

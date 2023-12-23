@@ -1,6 +1,6 @@
 'use client';
 import IssueList from '@/components/IssueList';
-import { getIssues, publicUrl } from '@/utils/httpRequest';
+import { getIssues } from '@/utils/httpRequest';
 import { Box, Tabs } from '@radix-ui/themes';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -69,7 +69,7 @@ const IssuesTabContent = ({ status }: { status: string }) => {
   useEffect(() => {
     setLoading(true);
     const fetchIssues = async () => {
-      const newIssues = await getIssues(publicUrl, undefined, status, 'desc');
+      const newIssues = await getIssues(null, undefined, status, 'desc');
       setIssues(newIssues);
       setLoading(false);
     };
